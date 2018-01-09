@@ -1,9 +1,7 @@
 import datetime as dt
 import base64
-import csv
-
-#set input file
-input_file = 'input.csv'
+import csv#set input file
+import os.path
 
 # ----------TEMPLATES----------
 
@@ -248,41 +246,51 @@ def create_question_block(question_dict):
   question_block = create_question(question_variables)
   return question_block
 
-# COMPILE QUIZ
+# ----------COMPILE QUIZ----------
 
-final_xml = ""
+#set input file
+input_file = input('Enter name of csv file (.csv will be added): ')
 
-final_xml = final_xml + open_quiz
+input_file = input_file + '.csv'
 
-question_count = 0
-category_count = 0
-#
-raw_list = read_input(input_file)
-q_list = read_qs(raw_list)
-quiz_parts = create_quiz_parts(q_list)
+if os.path.isfile(input_file):
+    print("Processing: %s" % input_file)
 
-for x in quiz_parts:
-  if len(x) == 1:
-    y = category_template.format(category=x['category'])
-    final_xml = final_xml + y
-    log = log + "\n" + "###" + str(x['category']) + "###"
-    category_count += 1
-  else:
-    try:
-      x['correct_feedback'] = ''
-      x['incorrect_feedback'] = ''
-      y = create_question_block(x)
-      final_xml = final_xml + y
-      question_count += 1
-      log = log + "\n" + str(question_count) + " %s" % x['question_name']
-    except Exception as e:
-      log = log + "\n" + "__Failure on: %s" % x['question_name']
-      print("__Failure on: %s" % x['question_name'])
-      print(e)
+    final_xml = ""
 
-print("Questions created: %s" % question_count)
-print("Categories created: %s" % category_count)
+    final_xml = final_xml + open_quiz
 
-final_xml = final_xml + close_quiz
+    question_count = 0
+    category_count = 0
+    #
+    raw_list = read_input(input_file)
+    q_list = read_qs(raw_list)
+    quiz_parts = create_quiz_parts(q_list)
 
-create_output_file(final_xml, log)
+    for x in quiz_parts:
+      if len(x) == 1:
+        y = category_template.format(category=x['category'])
+        final_xml = final_xml + y
+        log = log + "\n" + "###" + str(x['category']) + "###"
+        category_count += 1
+      else:
+        try:
+          x['correct_feedback'] = ''
+          x['incorrect_feedback'] = ''
+          y = create_question_block(x)
+          final_xml = final_xml + y
+          question_count += 1
+          log = log + "\n" + str(question_count) + " %s" % x['question_name']
+        except Exception as e:
+          log = log + "\n" + "__Failure on: %s" % x['question_name']
+          print("__Failure on: %s" % x['question_name'])
+          print(e)
+
+    print("Questions created: %s" % question_count)
+    print("Categories created: %s" % category_count)
+
+    final_xml = final_xml + close_quiz
+
+    create_output_file(final_xml, log)
+else:
+    print("%s is not a file" % input_file)
