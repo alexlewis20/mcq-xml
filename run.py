@@ -116,7 +116,7 @@ def create_question_dict(one_list):
     elif x[0] == "category":
         question_dict["category"] = x[1]
     else:
-      log = log  + " Unknown: " + x + "\n"
+      log = log  + " Unknown: " + str(x) + "\n"
 
   if "question_image" in question_dict:
     if len(question_dict["question_image"]) > 0:
