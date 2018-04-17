@@ -127,7 +127,7 @@ def create_question_dict(one_list):
         question_dict["question_text"] = question_dict["question_text"] + image_block
         log = log  + " [question img: %s]" % filename
       except:
-        log = log + " [FAIL qustion img]"
+        log = log + " [FAIL question img %s]" % filename
 
   if "feedback_image" in question_dict:
     if len(question_dict["feedback_image"]) > 0:
@@ -136,9 +136,9 @@ def create_question_dict(one_list):
         image_string = base64_image(filename)
         image_block = image_template.format(image_string=image_string)
         question_dict["general_feedback"] = question_dict["general_feedback"] + image_block
-        log = log + " [feedback img: %s]" % filename
+        log = log + " [feedback img: %s]\n" % filename
       except:
-        log = log + " [FAIL feedback img]"
+        log = log + " [FAIL feedback img %s]\n" % filename
 
   return question_dict
 
