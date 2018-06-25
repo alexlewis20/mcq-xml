@@ -1,0 +1,1 @@
+=CONCATENATE("<p>",SUBSTITUTE((SUBSTITUTE(C5, "–", "-")),CHAR(10),"</p><p>"), "</p>")

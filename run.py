@@ -69,8 +69,9 @@ def read_qs(raw_list):
             question = []
         elif x[0] == "[END QUESTION]":
             q_list.append(question)
-        elif x[0] == "CATEGORY NAME:":
+        elif x[0] == "﻿CATEGORY NAME:":
             q_list.append([["category", x[2]]])
+            print("Category is ... %s" % x[2])
         elif len(x[0]) == 0 or x[0] in ("ANSWERS", "GENERAL FEEDBACK"):
             pass
         else:
@@ -268,7 +269,7 @@ if os.path.isfile(input_file):
     quiz_parts = create_quiz_parts(q_list)
 
     for x in quiz_parts:
-      if len(x) == 1:
+      if "category" in x:
         y = category_template.format(category=x['category'])
         final_xml = final_xml + y
         log = log + "\n" + "###" + str(x['category']) + "###"
